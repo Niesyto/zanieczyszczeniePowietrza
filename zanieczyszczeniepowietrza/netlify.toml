@@ -1,4 +1,4 @@
 [build]
 base = "zanieczyszczeniepowietrza/"
 publish = "zanieczyszczeniepowietrza/build/"
-command = "npm run build"
+command = "yarn build"
