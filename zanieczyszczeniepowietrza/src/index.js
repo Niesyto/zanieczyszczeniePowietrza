@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core'
-import { orange } from '@material-ui/core/colors';
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import './index.css'
+import Typography from '@material-ui/core/Typography';
 
 
 const theme = createMuiTheme({
@@ -13,20 +14,34 @@ const theme = createMuiTheme({
             light:'#4a6572',
             main:'#344955'
         },
-        secondary: orange,
-        text: orange,
-       
-        type : 'dark'
+        secondary: {
+            dark: '#ff6f00',
+            light:'#ffe082',
+            main:'#ffc107'
+        },  
+        type : 'dark',
+        text: {
+            disabled: "#232f34",
+            hint: "#232f34",
+            icon: "#232f34",
+            primary: "#232f34", 
+        }
     },
+    
    
 })
 
 console.log(theme);
 
-ReactDOM.render(
-    <MuiThemeProvider theme={theme}>
-        <App />
+ReactDOM.render(   
+    <MuiThemeProvider theme={theme}>  
+   
+        <App />   
+        <Typography  color='secondary'>
+          example project
+        </Typography>
     </MuiThemeProvider>
+
 , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

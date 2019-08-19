@@ -12,10 +12,8 @@ function TabPanel(props) {
   return (
     <Typography
       component="div"
-      role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
       <Box p={3}>{children}</Box>
@@ -51,9 +49,9 @@ function MenuBar(props) {
         {props.mode}
       </TabPanel>
       <TabPanel value={props.mode} index={1}>
-        Item Two
-        {props.mode}
+        aaaa
       </TabPanel>
+      
     </div>
     );
 }
