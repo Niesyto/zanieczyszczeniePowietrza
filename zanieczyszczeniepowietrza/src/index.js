@@ -35,7 +35,7 @@ console.log(theme);
 
 ReactDOM.render(   
     <MuiThemeProvider theme={theme}>  
-        <App />         
+        <App />     
     </MuiThemeProvider>
 
 , document.getElementById('root'));
