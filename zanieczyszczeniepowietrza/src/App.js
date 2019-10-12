@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 function App() {
   const [mode, setMode] = React.useState(0);
   const [crd, setCrd] = React.useState(0);
+  const [err, setErr] = React.useState(0);
 
 
   function success(pos) {
@@ -21,6 +22,7 @@ function App() {
   }
 
   function error(err) {
+    setErr(err.code)
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
@@ -35,18 +37,12 @@ function App() {
       />
 
       <TabPanel value={mode} index={0}>
-        <NavigationPanel coords={crd}/>
+        <NavigationPanel coords={crd} error={err}/>
       </TabPanel>
       <TabPanel value={mode} index={1}>
           {mode}
       </TabPanel>    
 
-     
-      <Typography color='secondary'>
-        example project
-      </Typography>
-
-      
     </>
   );
 }
