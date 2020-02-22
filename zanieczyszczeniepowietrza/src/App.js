@@ -8,12 +8,11 @@ import Typography from '@material-ui/core/Typography';
 function App() {
   const [mode, setMode] = React.useState(0);
   
-  const [stations, setStations] = React.useState({});
-  var url="https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/findAll";
-
+  const [stations, setStations] = React.useState(null);
+  const stationsUrl='https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/findAll';
 
   useEffect(() => {
-  fetch(url,{ mode: 'cors', origin:"*" })
+  fetch(stationsUrl,{ mode: 'cors', origin:"*" })
     .then(res => res.json())
     .then(
       (result) => {
