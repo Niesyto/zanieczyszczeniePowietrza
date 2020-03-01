@@ -3,13 +3,29 @@ import MenuBar from './MenuBar.js';
 import TabPanel from './TabPanel.js';
 import NavigationPanel from './NavigationPanel.js';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  root:{
+    minHeight:'100vh',
+    height:'100vh'
+  },
+  flexContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    height:'90%'
+  }
+}));
+
 
 
 function App() {
   const [mode, setMode] = React.useState(0);
-  
   const [stations, setStations] = React.useState(null);
   const stationsUrl='https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/findAll';
+
+  const classes = useStyles();
 
   useEffect(() => {
   fetch(stationsUrl,{ mode: 'cors', origin:"*" })
@@ -20,23 +36,19 @@ function App() {
           return;
       })},[])
 
-
-
   return (
-    <>
+    <div className={classes.root}>
       <MenuBar
         mode={mode}
         setMode={setMode}
       />
-
-      <TabPanel value={mode} index={0}>
+      <TabPanel value={mode} index={0} className={classes.flexContainer}>
         <NavigationPanel stations={stations}/>
       </TabPanel>
-      <TabPanel value={mode} index={1}>
+      <TabPanel value={mode} index={1} className={classes.flexContainer}>
           {mode}
       </TabPanel>    
-
-    </>
+    </div>
   );
 }
 
