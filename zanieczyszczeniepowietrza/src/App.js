@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     flexDirection: 'column',
     height:'90%'
+  },
+  flexContainerHidden:{
+    display:'none'
   }
 }));
 
@@ -42,10 +45,10 @@ function App() {
         mode={mode}
         setMode={setMode}
       />
-      <TabPanel value={mode} index={0} className={classes.flexContainer}>
+      <TabPanel value={mode} index={0} className={mode ? classes.flexContainerHidden  : classes.flexContainer}>
         <NavigationPanel stations={stations}/>
       </TabPanel>
-      <TabPanel value={mode} index={1} className={classes.flexContainer}>
+      <TabPanel value={mode} index={1} className={!mode ? classes.flexContainerHidden  : classes.flexContainer}>
           {mode}
       </TabPanel>    
     </div>
