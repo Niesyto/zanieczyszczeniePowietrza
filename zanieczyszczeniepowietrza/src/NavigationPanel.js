@@ -83,7 +83,7 @@ function NavigationPanel(props) {
 
   return (
     <>
-      <Grid container spacing={3} >
+      <Grid container >
         {(props.stations && !err && stationName) ?
           <>
             <Grid item md={6} xs={12} className={classes.flexContainer}>
