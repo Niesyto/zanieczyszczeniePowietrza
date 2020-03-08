@@ -6,6 +6,7 @@ import CalculateDistance from './CalculateDistance.js';
 import Grid from '@material-ui/core/Grid';
 import SensorData from './SensorData.js';
 import DataBlock from './DataBlock.js'
+import LocationPicker from 'react-location-picker';
 
 import GPSgif from './GPS.gif'
 
@@ -29,6 +30,12 @@ function NavigationPanel(props) {
   const [stationName, setStationName] = React.useState("");
   const [sensors, setSensors] = React.useState("");
   const [distance, setDistance] = React.useState("");
+
+  const [position,setPosition] = React.useState({lat: 0, lng: 0});
+
+  function handleLocationChange ({ position, address, places }) {
+    setPosition(position);
+  }
 
   const classes = useStyles();
   const sensorsUrl = 'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/sensors/';
@@ -56,8 +63,6 @@ function NavigationPanel(props) {
   }
 
   //Find user geolocation
-
-
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     if (props.stations !== null) {
@@ -111,6 +116,12 @@ function NavigationPanel(props) {
                 data={stationName}
                 info={"Odległość: " + distance + " km"}
               />
+              <LocationPicker
+            containerElement={ <div style={ {height: '20%', width:"90%"} } /> }
+            mapElement={ <div style={ {height: '400px'} } /> }
+            defaultPosition={position}
+            onChange={handleLocationChange}
+          />
             </Grid>
           </>
           :
