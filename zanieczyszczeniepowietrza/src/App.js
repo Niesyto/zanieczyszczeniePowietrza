@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
-import MenuBar from './MenuBar.js';
-import TabPanel from './TabPanel.js';
 import NavigationPanel from './NavigationPanel.js';
 import { makeStyles } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +20,6 @@ const useStyles = makeStyles(theme => ({
 
 
 function App() {
-  const [mode, setMode] = React.useState(0);
   const [stations, setStations] = React.useState(null);
   const stationsUrl = 'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/findAll';
 
@@ -41,22 +37,9 @@ function App() {
 
   return (
     <div className={classes.root}>
-      <MenuBar
-        mode={mode}
-        setMode={setMode}
-      />
-      <SwipeableViews
-        axis={classes.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={mode}
-       
-      >
-        <TabPanel value={mode} index={0} className={mode ? classes.flexContainerHidden : classes.flexContainer}>
-          <NavigationPanel stations={stations} />
-        </TabPanel>
-        <TabPanel value={mode} index={1} className={!mode ? classes.flexContainerHidden : classes.flexContainer}>
-          {mode}
-        </TabPanel>
-      </SwipeableViews>
+      <div className={classes.flexContainer}>
+        <NavigationPanel stations={stations} />
+      </div>
     </div>
   );
 }
