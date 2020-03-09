@@ -32,6 +32,7 @@ function NavigationPanel(props) {
 
   function handleLocationChange({ position, address, places }) {
     setPosition(position);
+    setErr(null);
   }
 
   const classes = useStyles();
@@ -107,14 +108,6 @@ function NavigationPanel(props) {
             </Grid>
             <Grid item md={6} xs={12} className={classes.flexContainer}>
               <DataBlock
-                description="Szerokość"
-                data={position.lat.toPrecision(7)}
-              />
-              <DataBlock
-                description="Długość"
-                data={position.lng.toPrecision(7)}
-              />
-              <DataBlock
                 description="Najbliższa stacja"
                 data={stationName}
                 info={"Odległość: " + distance + " km"}
@@ -131,10 +124,18 @@ function NavigationPanel(props) {
           <Grid item md={12} xs={12} className={classes.flexContainer}>
             <img src={GPSgif} alt="Gif with a satelite" />
             {err ?
+            <>
               <DataBlock
                 description=""
                 data={err}
               />
+              <LocationPicker
+              containerElement={<div style={{ height: '400px', width: "90%" }} />}
+              mapElement={<div style={{ height: '400px' }} />}
+              defaultPosition={position}
+              onChange={handleLocationChange}
+            />
+            </>
               : null}
           </Grid>
         }
