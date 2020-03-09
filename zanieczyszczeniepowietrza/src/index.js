@@ -5,8 +5,6 @@ import * as serviceWorker from './serviceWorker';
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import './index.css'
 
-
-
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -32,35 +30,30 @@ const theme = createMuiTheme({
             fontSize: '2.125rem',
             '@media (min-width:960px)': {
                 fontSize: '3rem'
-              }
+            }
         },
         subtitle2: {
             fontSize: '0.875',
             fontWeight: 'bold',
             '@media (min-width:960px)': {
                 fontSize: '1.125rem'
-              }
+            }
         },
         caption: {
             fontSize: '0.75rem',
             fontWeight: 'bold',
             '@media (min-width:960px)': {
                 fontSize: '1rem'
-              }
+            }
         }
-
     }
-
-
 })
 
-console.log(theme);
 
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>
         <App />
     </MuiThemeProvider>
-
     , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

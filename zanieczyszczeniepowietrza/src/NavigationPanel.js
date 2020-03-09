@@ -23,26 +23,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function NavigationPanel(props) {
-  const [long, setLong] = React.useState(0);
-  const [lat, setLat] = React.useState(0);
   const [err, setErr] = React.useState(null);
   const [stationID, setStationID] = React.useState(undefined);
   const [stationName, setStationName] = React.useState("");
   const [sensors, setSensors] = React.useState("");
   const [distance, setDistance] = React.useState("");
+  const [position, setPosition] = React.useState({ lat: 50.270908, lng: 19.039993 });
 
-  const [position,setPosition] = React.useState({lat: 0, lng: 0});
-
-  function handleLocationChange ({ position, address, places }) {
+  function handleLocationChange({ position, address, places }) {
     setPosition(position);
+    setErr(null);
   }
 
   const classes = useStyles();
   const sensorsUrl = 'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/sensors/';
 
   function successCallback(pos) {
-    setLong(pos.coords.longitude);
-    setLat(pos.coords.latitude);
+    setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude })
     setErr(null);
   }
 
@@ -56,22 +53,29 @@ function NavigationPanel(props) {
     else
       setErr("Nieznany błąd");
 
-    setLong("");
-    setLat("");
-
     console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+
+  //Find closest station and set state to correct data
+  function setStationData() {
+    let nearestIndex = FindNearestStation(position.lat, position.lng, props.stations);
+    setDistance(CalculateDistance(position.lat, props.stations[nearestIndex].gegrLat, position.lng, props.stations[nearestIndex].gegrLon));
+    setStationID(props.stations[nearestIndex].id);
+    setStationName(props.stations[nearestIndex].stationName);
   }
 
   //Find user geolocation
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     if (props.stations !== null) {
-      let nearestIndex = FindNearestStation(lat, long, props.stations);
-      setDistance(CalculateDistance(lat, props.stations[nearestIndex].gegrLat, long, props.stations[nearestIndex].gegrLon));
-      setStationID(props.stations[nearestIndex].id);
-      setStationName(props.stations[nearestIndex].stationName);
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+      setStationData();
     }
   }, [props.stations])
+
+  useEffect(() => {
+    if (props.stations)
+      setStationData();
+  }, [position])
 
   useEffect(() => {
     if (stationID !== undefined) {
@@ -104,39 +108,37 @@ function NavigationPanel(props) {
             </Grid>
             <Grid item md={6} xs={12} className={classes.flexContainer}>
               <DataBlock
-                description="Szerokość"
-                data={lat.toPrecision(7)}
-              />
-              <DataBlock
-                description="Długość"
-                data={long.toPrecision(7)}
-              />
-              <DataBlock
                 description="Najbliższa stacja"
                 data={stationName}
                 info={"Odległość: " + distance + " km"}
               />
               <LocationPicker
-            containerElement={ <div style={ {height: '20%', width:"90%"} } /> }
-            mapElement={ <div style={ {height: '400px'} } /> }
-            defaultPosition={position}
-            onChange={handleLocationChange}
-          />
+                containerElement={<div style={{ height: '400px', width: "90%" }} />}
+                mapElement={<div style={{ height: '400px' }} />}
+                defaultPosition={position}
+                onChange={handleLocationChange}
+              />
             </Grid>
           </>
           :
           <Grid item md={12} xs={12} className={classes.flexContainer}>
             <img src={GPSgif} alt="Gif with a satelite" />
             {err ?
+            <>
               <DataBlock
                 description=""
                 data={err}
               />
+              <LocationPicker
+              containerElement={<div style={{ height: '400px', width: "90%" }} />}
+              mapElement={<div style={{ height: '400px' }} />}
+              defaultPosition={position}
+              onChange={handleLocationChange}
+            />
+            </>
               : null}
           </Grid>
         }
-
-
       </Grid>
     </>
   );
