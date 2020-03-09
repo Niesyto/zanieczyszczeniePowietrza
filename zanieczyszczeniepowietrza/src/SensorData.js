@@ -38,10 +38,10 @@ function SensorData(props) {
     <>
       {sensorData ?
         //If sensor data is fetched, display id
-        <DataBlock 
-        description={sensorData.key} 
-        data={sensorData.values[latestIndex].value + " µg/m3"} 
-        info={"Data: "+sensorData.values[latestIndex].date}/>
+        <DataBlock
+          description={sensorData.key}
+          data={sensorData.values[latestIndex].value + " µg/m3"}
+          info={"Data: " + sensorData.values[latestIndex].date} />
         :
         //If not, display 'loading'
         <Typography color='secondary'> Loading...   </Typography>
