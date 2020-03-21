@@ -21,12 +21,12 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const [stations, setStations] = React.useState(null);
-  const stationsUrl = 'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/findAll';
-
+  //const stationsUrl = 'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/findAll';
+  const stationsUrl = 'https://api.allorigins.win/raw?url=http://api.gios.gov.pl/pjp-api/rest/station/findAll'
   const classes = useStyles();
 
   useEffect(() => {
-    fetch(stationsUrl, { mode: 'cors', origin: "*" })
+    fetch(stationsUrl, { mode: 'cors', origin: "*"})
       .then(res => res.json())
       .then(
         (result) => {

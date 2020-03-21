@@ -18,7 +18,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-evenly',
     flexWrap: 'wrap',
-    alignContent: 'center'
+    alignContent: 'center',
+    marginTop:"30px"
   },
 }));
 
@@ -26,8 +27,11 @@ function NavigationPanel(props) {
   const [err, setErr] = React.useState(null);
   const [stationID, setStationID] = React.useState(undefined);
   const [stationName, setStationName] = React.useState("");
+  //List of sensors
   const [sensors, setSensors] = React.useState("");
+  //Distance from position to the nearest station
   const [distance, setDistance] = React.useState("");
+  //Position - GPS or selected by user. Default - katowice
   const [position, setPosition] = React.useState({ lat: 50.270908, lng: 19.039993 });
 
   function handleLocationChange({ position, address, places }) {
@@ -36,8 +40,9 @@ function NavigationPanel(props) {
   }
 
   const classes = useStyles();
-  const sensorsUrl = 'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/sensors/';
-
+  //const sensorsUrl = 'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/sensors/';
+  const sensorsUrl = 'https://api.allorigins.win/raw?url=http://api.gios.gov.pl/pjp-api/rest/station/sensors/';
+ 
   function successCallback(pos) {
     setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude })
     setErr(null);
@@ -72,6 +77,7 @@ function NavigationPanel(props) {
     }
   }, [props.stations])
 
+  //Set station dat if position changed
   useEffect(() => {
     if (props.stations)
       setStationData();
@@ -121,23 +127,25 @@ function NavigationPanel(props) {
             </Grid>
           </>
           :
-          <Grid item md={12} xs={12} className={classes.flexContainer}>
-            <img src={GPSgif} alt="Gif with a satelite" />
-            {err ?
-            <>
-              <DataBlock
+          <>
+          <Grid item md={6} xs={12} className={classes.flexContainer}>
+           <img src={GPSgif} alt="Gif with a satelite" />     
+          </Grid>      
+          <Grid item md={6} xs={12} className={classes.flexContainer}>
+          {err ?
+                <DataBlock
                 description=""
                 data={err}
-              />
-              <LocationPicker
+              /> 
+              : null}
+               <LocationPicker
               containerElement={<div style={{ height: '400px', width: "90%" }} />}
               mapElement={<div style={{ height: '400px' }} />}
               defaultPosition={position}
               onChange={handleLocationChange}
             />
-            </>
-              : null}
           </Grid>
+          </>
         }
       </Grid>
     </>

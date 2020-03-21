@@ -6,7 +6,7 @@ export default function DataBlock(props) {
 
     return (
         <span style={{ display: "inline-block", minWidth: "280px", textAlign: "center", marginBottom: "10px" }} >
-            <span style={{ display: "inline-block" }}>
+            <span style={{ display: "inline-block", paddingLeft:"15px", paddingRight:"15px" }}>
                 <Typography color='textSecondary' variant="subtitle2">
                     {props.description}
                 </Typography>
