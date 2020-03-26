@@ -23,6 +23,15 @@ const theme = createMuiTheme({
             hint: "#232f34",
             icon: "#232f34",
             primary: "#232f34",
+        },
+        success: {
+            main: '#344955'
+        },
+        info:{
+            main: '#344955'
+        },
+        warning:{
+            main: '#344955'
         }
     },
     typography: {
@@ -49,7 +58,7 @@ const theme = createMuiTheme({
     }
 })
 
-
+console.log(theme);
 ReactDOM.render(
     <MuiThemeProvider theme={theme}>
         <App />
