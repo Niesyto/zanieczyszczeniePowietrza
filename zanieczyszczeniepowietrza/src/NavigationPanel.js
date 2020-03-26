@@ -7,8 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import SensorData from './SensorData.js';
 import DataBlock from './DataBlock.js'
 import LocationPicker from 'react-location-picker';
-
+import Snackbar from '@material-ui/core/Snackbar';
 import GPSgif from './GPS.gif'
+import Alert from '@material-ui/lab/Alert';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-evenly',
     flexWrap: 'wrap',
     alignContent: 'center',
-    marginTop:"30px"
+    marginTop: "30px"
   },
 }));
 
@@ -33,6 +35,11 @@ function NavigationPanel(props) {
   const [distance, setDistance] = React.useState("");
   //Position - GPS or selected by user. Default - katowice
   const [position, setPosition] = React.useState({ lat: 50.270908, lng: 19.039993 });
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
+
+  function handleTooltipClose() {
+    setTooltipOpen(false);
+  }
 
   function handleLocationChange({ position, address, places }) {
     setPosition(position);
@@ -42,7 +49,7 @@ function NavigationPanel(props) {
   const classes = useStyles();
   //const sensorsUrl = 'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/sensors/';
   const sensorsUrl = 'https://api.allorigins.win/raw?url=http://api.gios.gov.pl/pjp-api/rest/station/sensors/';
- 
+
   function successCallback(pos) {
     setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude })
     setErr(null);
@@ -90,7 +97,8 @@ function NavigationPanel(props) {
         .then(res => res.json())
         .then(
           (result) => {
-            setSensors(result)
+            setSensors(result);
+            setTooltipOpen(true);
             return;
           })
     }
@@ -104,7 +112,7 @@ function NavigationPanel(props) {
             <Grid item md={6} xs={12} className={classes.flexContainer}>
               {sensors ?
                 sensors.map((element) => {
-                  return <SensorData sensorID={element.id} />
+                  return <SensorData sensorID={element.id} key={element.id} />
                 })
                 :
                 <Typography color='secondary'>
@@ -125,26 +133,36 @@ function NavigationPanel(props) {
                 onChange={handleLocationChange}
               />
             </Grid>
+
+            <Snackbar
+              open={tooltipOpen}
+              onClose={handleTooltipClose}
+            >
+              <Alert variant="filled" severity="info">
+                Kliknij w pomiar aby wyświetlić szczegółowe informacje
+            </Alert>
+            </Snackbar>
+
           </>
           :
           <>
-          <Grid item md={6} xs={12} className={classes.flexContainer}>
-           <img src={GPSgif} alt="Gif with a satelite" />     
-          </Grid>      
-          <Grid item md={6} xs={12} className={classes.flexContainer}>
-          {err ?
+            <Grid item md={6} xs={12} className={classes.flexContainer}>
+              <img src={GPSgif} alt="Gif with a satelite" />
+            </Grid>
+            <Grid item md={6} xs={12} className={classes.flexContainer}>
+              {err ?
                 <DataBlock
-                description=""
-                data={err}
-              /> 
-              : null}
-               <LocationPicker
-              containerElement={<div style={{ height: '400px', width: "90%" }} />}
-              mapElement={<div style={{ height: '400px' }} />}
-              defaultPosition={position}
-              onChange={handleLocationChange}
-            />
-          </Grid>
+                  description=""
+                  data={err}
+                />
+                : null}
+              <LocationPicker
+                containerElement={<div style={{ height: '400px', width: "90%" }} />}
+                mapElement={<div style={{ height: '400px' }} />}
+                defaultPosition={position}
+                onChange={handleLocationChange}
+              />
+            </Grid>
           </>
         }
       </Grid>

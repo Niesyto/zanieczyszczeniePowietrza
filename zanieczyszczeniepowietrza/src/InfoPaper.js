@@ -42,7 +42,7 @@ export default function InfoPaper(props) {
             </Typography>
         {pollutants(props.pollutant).description.map((element) => {
           return (
-            <Typography variant="body2" component="p" color="textSecondary">
+            <Typography variant="body2" component="p" color="textSecondary" key={element}>
               {element}
             </Typography>
           )
